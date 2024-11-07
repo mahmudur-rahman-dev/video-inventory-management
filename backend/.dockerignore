@@ -1,0 +1,45 @@
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Build directories
+build/
+target/
+bin/
+out/
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+.project
+.classpath
+.settings/
+
+# Logs
+logs/
+*.log
+
+# Local development files
+.env
+.env.local
+docker-compose*.yml
+
+# Test files
+src/test/
+**/test/
+
+# Other unnecessary files
+README.md
+CHANGELOG.md
+LICENSE
+*.md
+.DS_Store
+
+# Gradle
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Upload directory
+uploads/
