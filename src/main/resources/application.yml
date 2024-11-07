@@ -1,0 +1,46 @@
+server:
+  port: 8080
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+      enabled: true
+  application:
+    name: video-inventory
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/video_inventory?allowPublicKeyRetrieval=true
+    username: user
+    password: pass
+
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+
+#  autoconfigure:
+#    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+
+application:
+  security:
+    jwt:
+      secret-key: 586B633834416E396M7436753879382F423F4428482B4C6250655367566B5970
+      expiration: 90000000
+      cookie-name: jwt-cookie
+      refresh-token:
+        expiration: 1296000000
+        cookie-name: refresh-jwt-cookie
+
+
+
+app:
+  video:
+    storage:
+      location: uploads/videos
+    max-size: 524288000  # 500MB
+

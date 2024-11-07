@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  # MySQL Database Service
+  mysql:
+    image: mysql:latest
+    container_name: video_inventory_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: video_inventory
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - video_inventory_network
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+
+  # Spring Boot Application Service
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: video_inventory_api
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/video_inventory?allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      TZ: Asia/Dhaka
+    volumes:
+      - video_uploads:/app/uploads/videos
+    networks:
+      - video_inventory_network
+
+  # React Frontend Service (commented out for future use)
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   container_name: video_inventory_ui
+  #   restart: unless-stopped
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     - video_inventory_network
+
+# Named volumes for data persistence
+volumes:
+  mysql_data:
+    name: video_inventory_mysql_data
+  video_uploads:
+    name: video_inventory_uploads
+
+# Custom network for service isolation
+networks:
+  video_inventory_network:
+    name: video_inventory_network
+    driver: bridge
