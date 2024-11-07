@@ -27,7 +27,7 @@ public class VideoAssignment extends BaseEntity {
     private User user;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "video_id", nullable = false)
     private Video video;
 

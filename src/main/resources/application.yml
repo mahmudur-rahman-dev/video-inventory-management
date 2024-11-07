@@ -11,7 +11,7 @@ spring:
     name: video-inventory
 
   datasource:
-    url: jdbc:mysql://localhost:3306/video_inventory?allowPublicKeyRetrieval=true
+    url: jdbc:mysql://mysql:3306/video_inventory?allowPublicKeyRetrieval=true
     username: user
     password: pass
 
