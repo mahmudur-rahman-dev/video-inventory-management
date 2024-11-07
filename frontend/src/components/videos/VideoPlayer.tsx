@@ -128,17 +128,24 @@ export function VideoPlayer({
   }, [src])
 
   const getVideoUrl = (videoUrl: string) => {
-    const baseUrl = process.env.NEXT_PUBLIC_VIDEO_API_BASE_URL || 'http://localhost:8080'
+    const DEFAULT_SERVER_URL = 'http://backend:8080'
+    const DEFAULT_CLIENT_URL = 'http://localhost:8080'
+    
+    if (typeof window === 'undefined') {
+      const baseUrl = process.env.NEXT_INTERNAL_VIDEO_API_BASE_URL || DEFAULT_SERVER_URL
+      return `${baseUrl}/uploads/${videoUrl}`
+    }
+    
+    const baseUrl = process.env.NEXT_PUBLIC_VIDEO_API_BASE_URL || DEFAULT_CLIENT_URL
     return `${baseUrl}/uploads/${videoUrl}`
   }
 
   const handlePlayPause = useCallback(() => {
     setPlayerState(prev => {
       const newPlaying = !prev.playing
-      // Log "VIEWED" action only on first play
       if (newPlaying && !hasLoggedRef.current && !disableLogging && user?.id) {
         hasLoggedRef.current = true
-        logActivity("VIEWED") // Use uppercase action
+        logActivity("VIEWED")
       }
       return { ...prev, playing: newPlaying }
     })
