@@ -33,7 +33,7 @@ public class VideoAssignmentServiceImpl implements VideoAssignmentService {
 
     @Override
     public Page<VideoAssignment> getAllAssignments(Pageable pageable) {
-        return videoAssignmentRepository.findAll(pageable);
+        return videoAssignmentRepository.findAllAssignments(pageable);
     }
 
     public VideoAssignment save(VideoAssignment videoAssignment) {

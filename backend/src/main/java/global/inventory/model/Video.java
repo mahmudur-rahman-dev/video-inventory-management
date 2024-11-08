@@ -30,7 +30,7 @@ public class Video extends BaseEntity {
     @Column(name = "video_url", nullable = false)
     private String videoUrl;
 
-    @OneToMany(mappedBy = "video", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "video", cascade = CascadeType.ALL)
     private Set<VideoAssignment> videoAssignments = new HashSet<>();
 
     private boolean deleted = false;

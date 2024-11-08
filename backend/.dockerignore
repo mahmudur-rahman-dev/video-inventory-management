@@ -26,9 +26,6 @@ logs/
 .env.local
 docker-compose*.yml
 
-# Test files
-src/test/
-**/test/
 
 # Other unnecessary files
 README.md
