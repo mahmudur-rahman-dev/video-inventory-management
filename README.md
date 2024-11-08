@@ -37,6 +37,12 @@ To run the project locally using Docker Compose, follow these steps:
      
      [Frontend UI](http://localhost:3000)
 
+   - **Admin Access**: Admin Dashboard is accessible with the following credentials:
+     
+     ```sh
+     username:admin password:pass
+     ```
+
 ## Services Description
 
 The Docker Compose file (`docker-compose.yml`) defines the following services:
