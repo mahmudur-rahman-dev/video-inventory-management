@@ -1,3 +1,4 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -38,7 +39,7 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
     implementation("org.projectlombok:lombok-mapstruct-binding:0.2.0")
-    implementation("org.mapstruct:mapstruct:1.4.2.Final")
+    implementation("org.mapstruct:mapstruct:1.5.5.Final")
 
     implementation("mysql:mysql-connector-java:8.0.33")
 
@@ -47,15 +48,20 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
 
     annotationProcessor("org.projectlombok:lombok")
-    annotationProcessor("org.mapstruct:mapstruct-processor:1.4.2.Final")
+    annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
     annotationProcessor("org.hibernate:hibernate-jpamodelgen:6.4.0.Final")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 tasks.withType<Test> {
-    enabled = false
+    enabled = true
     useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+        exceptionFormat = TestExceptionFormat.FULL
+        showStandardStreams = true
+    }
 }
 
 tasks.register<Delete>("cleanJar") {
@@ -64,6 +70,7 @@ tasks.register<Delete>("cleanJar") {
 
 tasks.bootJar {
     dependsOn("cleanJar")
+    dependsOn("test")
 
     val timeStamp = SimpleDateFormat("yyyyMMdd").format(Date())
     archiveFileName.set("video-inventory.jar")
